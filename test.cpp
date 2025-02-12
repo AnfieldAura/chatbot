@@ -1,5 +1,5 @@
 #include<iostream>
 int main(){
-    cout<<"hhh";
+    cout<<"hhhHHH/n";
     return 0;
 }
