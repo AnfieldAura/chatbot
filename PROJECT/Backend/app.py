@@ -11,7 +11,7 @@ from flask_cors import CORS
 
 # Flask setup
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}}, methods=["GET", "POST", "OPTIONS"], allow_headers=["Content-Type", "Authorization"])  # Allow Vite frontend
+CORS(app, resources={r"/*": {"origins": "*"}}, methods=["GET", "POST", "OPTIONS"], allow_headers=["Content-Type", "Authorization"])  # Allow all origins for testing
 
 # Load data (with question + answer)
 data_file_path = os.path.join(os.path.dirname(__file__), "ccleaned_data.json")
@@ -90,6 +90,22 @@ def search():
         print("Error during search:", e)
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/attendance', methods=['POST'])
+def get_attendance():
+    data = request.get_json()
+    roll_number = data.get('rollNumber')  # Dynamically receiving roll number
+
+    # Mock attendance data
+    attendance_data = {
+        "23BD1A6621": 85,
+        "23BD1A6622": 92,
+        # Add more roll numbers and their attendance dynamically as needed
+    }
+
+    if roll_number in attendance_data:
+        return jsonify({"attendancePercentage": attendance_data[roll_number]})  # Returning attendance dynamically
+    else:
+        return jsonify({"error": "Roll number not found in the database."}), 404
 
 if __name__ == "__main__":
     app.run(debug=True)
