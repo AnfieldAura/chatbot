@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Calendar, Book, Award, Quote, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -14,10 +13,18 @@ const dashboardItems = [
   { id: 'calendar', name: 'Calendar', icon: Calendar },
   { id: 'attendance', name: 'Attendance', icon: Award },
   { id: 'materials', name: 'Saved Materials', icon: Book },
+  { id: 'timetable', name: 'Time Table', icon: Calendar }, // New button added
   { id: 'quote', name: 'Daily Quote', icon: Quote },
 ];
 
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ onDashboardItemClick, isOpen, onClose }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark', !isDarkMode);
+  };
+
   return (
     <div 
       className={cn(
@@ -52,10 +59,16 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ onDashboardItemClick, isOpen,
       </div>
       
       <div className="p-4 border-t border-align-secondary">
-        <div className="glass-card p-3">
+        <div className="glass-card p-3 mb-4">
           <p className="text-xs text-align-muted">Need assistance?</p>
           <p className="text-sm">Contact Support</p>
         </div>
+        <button
+          onClick={toggleDarkMode}
+          className="w-full p-3 text-left rounded-lg bg-align-accent/10 hover:bg-align-accent/20 transition-colors duration-200"
+        >
+          <span className="font-medium">{isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}</span>
+        </button>
       </div>
     </div>
   );

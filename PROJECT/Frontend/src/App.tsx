@@ -10,6 +10,8 @@ import StudentLogin from "./pages/StudentLogin";
 import ParentLogin from "./pages/ParentLogin";
 import MainChat from "./components/chat/MainChat";
 import NoSign from "./components/layout/AppLayout0";
+import AppLayout from "./components/layout/AppLayout";
+import './index.css';
 
 const queryClient = new QueryClient();
 
@@ -47,6 +49,7 @@ const App = () => (
           <Route path="/align" element={<Align />} />
           <Route path="/student-login" element={<StudentLogin />} />
           <Route path="/parent-login" element={<NoSign />} />
+          <Route path="/student" element={<AppLayout />} />
           <Route path="/chat" element={<MainChat />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
