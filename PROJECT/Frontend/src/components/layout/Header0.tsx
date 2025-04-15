@@ -8,6 +8,7 @@ interface HeaderProps {
 }
 
 const Header0: React.FC<HeaderProps> = ({ toggleLeftSidebar, toggleRightSidebar }) => {
+  return (
     <header className="h-16 border-b border-align-secondary flex items-center justify-between px-4">
       <div className="flex items-center">
         <Button variant="ghost" size="icon" className="md:hidden mr-2" onClick={toggleLeftSidebar}>
