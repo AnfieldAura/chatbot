@@ -9,34 +9,33 @@ import Align from "./pages/Align";
 import StudentLogin from "./pages/StudentLogin";
 import ParentLogin from "./pages/ParentLogin";
 import MainChat from "./components/chat/MainChat";
-import NoSign from "./components/layout/AppLayout0";
-import AppLayout from "./components/layout/AppLayout";
-import './index.css';
-
+import AppLayout0 from "./components/layout/AppLayout0"; // Corrected import for AppLayout0
+import AppLayout from "./components/layout/AppLayout"; // Importing AppLayout for future use
 const queryClient = new QueryClient();
 
 /**
- * The `App` component serves as the root component of the application.
+ * The App component serves as the root component of the application.
  * It wraps the application with several providers and sets up routing.
  *
  * Providers:
- * - `QueryClientProvider`: Provides React Query's `QueryClient` to manage server state.
- * - `TooltipProvider`: Provides context for tooltips throughout the application.
- * - `Toaster`: Displays toast notifications.
- * - `Sonner`: Manages additional notifications.
+ * - QueryClientProvider: Provides React Query's QueryClient to manage server state.
+ * - TooltipProvider: Provides context for tooltips throughout the application.
+ * - Toaster: Displays toast notifications.
+ * - Sonner: Manages additional notifications.
  *
  * Routing:
- * - Uses `BrowserRouter` to enable client-side routing.
- * - Defines routes using `Routes` and `Route` components:
- *   - `/`: Renders the `Index` component.
- *   - `/align`: Renders the `Align` component.
- *   - `/student-login`: Renders the `StudentLogin` component.
- *   - `/parent-login`: Renders the `ParentLogin` component.
- *   - `/chat`: Renders the `MainChat` component.
- *   - `*`: A catch-all route that renders the `NotFound` component for undefined paths.
+ * - Uses BrowserRouter to enable client-side routing.
+ * - Defines routes using Routes and Route components:
+ *   - /: Renders the Index component.
+ *   - /align: Renders the Align component.
+ *   - /student-login: Renders the StudentLogin component.
+ *   - /parent-login: Renders the ParentLogin component.
+ *   - /chat: Renders the MainChat component.
+ *   - /AppLayout0: Renders the AppLayout0 component.
+ *   - *: A catch-all route that renders the NotFound component for undefined paths.
  *
  * Note:
- * - All custom routes should be added above the catch-all `*` route to ensure proper routing.
+ * - All custom routes should be added above the catch-all * route to ensure proper routing.
  */
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -48,9 +47,11 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/align" element={<Align />} />
           <Route path="/student-login" element={<StudentLogin />} />
-          <Route path="/parent-login" element={<NoSign />} />
-          <Route path="/student" element={<AppLayout />} />
+          <Route path="/parent-login" element={<ParentLogin />} />
           <Route path="/chat" element={<MainChat />} />
+          <Route path="/AppLayout0" element={<AppLayout0 />} />
+          <Route path="/AppLayout" element={<AppLayout />} />
+           {/* Added route for AppLayout0 */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

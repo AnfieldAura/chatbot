@@ -77,8 +77,24 @@ def retrieve_relevant_docs(query, top_k=4):
     results = [text_chunks[i] for i in indices[0] if i < len(text_chunks)]
     return "\n".join(results[:3]) if results else "No relevant documents found."
 
+# Predefined responses for specific queries
+predefined_responses = {
+    "hi": "Hello! Welcome to KMIT. How can I assist you today?",
+    "hello": "Hi there! Welcome to KMIT. How can I help you?",
+    "hey": "Hey! Welcome to KMIT. What can I do for you?",
+    "welcome": "Welcome to KMIT! Feel free to ask me anything about the college.",
+    "bye": "Goodbye! Have a great day!",
+    "thank you": "You're welcome! Let me know if you have more questions.",
+}
+
 # 🧠 Generate Response
 def generate_response(query):
+    # Check for predefined responses
+    query_lower = query.lower().strip()
+    if query_lower in predefined_responses:
+        return predefined_responses[query_lower]
+
+    # Retrieve context from text chunks
     context = retrieve_relevant_docs(query)[:1000]  # limit for speed
     prompt = (
         f"You are a helpful assistant. Use the context to answer.\n\n"

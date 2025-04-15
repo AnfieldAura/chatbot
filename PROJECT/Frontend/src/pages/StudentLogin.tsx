@@ -3,32 +3,29 @@ import { GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const StudentLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [rollNumber, setRollNumber] = useState(""); // Roll number input
+  const [password, setPassword] = useState(""); // Password input
+  const [error, setError] = useState(""); // Error message
+  const navigate = useNavigate(); // React Router's navigation hook
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/attendance", {
+      const response = await fetch("http://localhost:5501/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rollNumber: email }), // Dynamically sending roll number
+        body: JSON.stringify({ rollNumber, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        if (data.attendancePercentage) {
-          navigate("/layout"); // Redirect to AppLayout
-        } else {
-          setError("Attendance data not found for the provided roll number.");
-        }
+        console.log("Login successful:", data);
+        navigate("/AppLayout"); // Redirect to AppLayout0
       } else {
         const errorData = await response.json();
-        setError(errorData.error || "Invalid roll number or server error.");
+        setError(errorData.error || "Invalid roll number or password.");
       }
     } catch (err) {
       setError("Unable to connect to the server. Please try again later.");
@@ -50,19 +47,19 @@ const StudentLogin = () => {
         <form onSubmit={handleSubmit}>
           <div className="mb-4 relative">
             <label
-              htmlFor="email"
+              htmlFor="rollNumber"
               className={`absolute left-3 top-2.5 text-gray-500 text-sm transition-all ${
-                email ? "text-xs -top-2.5 text-blue-600" : ""
+                rollNumber ? "text-xs -top-2.5 text-blue-600" : ""
               }`}
             >
-              Your roll number (ex. 23BD1A6621)
+              Your roll number (e.g., 23BD1A6621)
             </label>
             <input
               type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              id="rollNumber"
+              value={rollNumber}
+              onChange={(e) => setRollNumber(e.target.value)}
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black"
               required
             />
           </div>
@@ -78,7 +75,7 @@ const StudentLogin = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black"
               placeholder="Default password is Kmit123$"
               required
             />

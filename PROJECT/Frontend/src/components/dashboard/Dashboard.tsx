@@ -6,6 +6,7 @@ import CalendarWidget from './widgets/CalendarWidget';
 import AttendanceWidget from './widgets/AttendanceWidget';
 import MaterialsWidget from './widgets/MaterialsWidget';
 import QuoteWidget from './widgets/QuoteWidget';
+import TimeTableWidget from './widgets/TimetableWidget';
 
 interface DashboardProps {
   activeWidget: string | null;
@@ -22,6 +23,7 @@ const Dashboard: React.FC<DashboardProps> = ({ activeWidget, onBackClick }) => {
         <h2 className="text-2xl font-bold text-white">
           {activeWidget === 'calendar' && 'Calendar'}
           {activeWidget === 'attendance' && 'Attendance'}
+          {activeWidget === 'timetable' && 'Timetable'}
           {activeWidget === 'materials' && 'Saved Materials'}
           {activeWidget === 'quote' && 'Daily Quote'}
           {!activeWidget && 'Dashboard'}
@@ -41,7 +43,11 @@ const Dashboard: React.FC<DashboardProps> = ({ activeWidget, onBackClick }) => {
               <AttendanceWidget />
             </div>
           ) : null}
-          
+          {activeWidget === 'timetable' || !activeWidget ? (
+            <div>
+              <TimeTableWidget />
+              </div>
+              ) : null}
           {activeWidget === 'materials' || !activeWidget ? (
             <div>
               <MaterialsWidget />
