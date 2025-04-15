@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import Header from './Header';
+import Header0 from './Header0';
 import MainChat from '../chat/MainChat';
 import Dashboard from '../dashboard/Dashboard';
 
@@ -22,7 +22,7 @@ const AppLayout: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-align">
-      <Header 
+      <Header0 
         toggleLeftSidebar={() => setIsMobileLeftSidebarOpen(!isMobileLeftSidebarOpen)} 
         toggleRightSidebar={() => setIsMobileRightSidebarOpen(!isMobileRightSidebarOpen)} 
       />

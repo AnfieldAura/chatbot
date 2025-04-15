@@ -51,7 +51,7 @@ const Align = () => {
             <p>with a no login version.</p>
           </CardContent>
           <CardFooter className="flex justify-center pt-2">
-            <Link to="/parent-login">
+            <Link to="/appLayout0">
               <Button className="bg-indigo-600 hover:bg-indigo-700 px-8 py-4 rounded-lg">
                 Use without signing in
               </Button>
