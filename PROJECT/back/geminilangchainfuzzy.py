@@ -8,13 +8,15 @@ import google.generativeai as genai
 from sentence_transformers import SentenceTransformer
 from difflib import get_close_matches
 from sklearn.metrics.pairwise import cosine_similarity
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 # Set your Gemini API key
 GOOGLE_API_KEY = "AIzaSyDZHrVTWD8gfh_OtShy-cmhWYuNu4DoRO8"
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Load JSON Data
-json_path = r"C:\Users\addan\Downloads\back\gemini.json"
+json_path = r"C:\Users\addan\OneDrive\Documents\GitHub\chatbot\PROJECT\back\gemini.json"
 with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
@@ -164,25 +166,22 @@ def enter_admin_mode():
 
             print(f"✅ Answer for '{query}' updated and saved.")
 
-# Main loop
-def chatbot():
-    print("Gemini Flash Chatbot is ready! Type '/admin' to enter admin mode or '/exit' to quit.")
-    while True:
-        try:
-            query = input("You: ")
-            if query.lower() in ["/exit", "/quit"]:
-                print("Chatbot: Goodbye! 👋")
-                break
-            elif query.lower() == "/admin":
-                enter_admin_mode()
-            else:
-                start = time.time()
-                response = generate_response(query)
-                end = time.time()
-                print(f"Chatbot ({round(end - start, 2)}s):", response)
-        except KeyboardInterrupt:
-            print("\nChatbot: Interrupted. Goodbye! 👋")
-            break
+# Flask API
+app = Flask(__name__)
+CORS(app)  # Enable CORS for cross-origin requests
+
+@app.route('/search', methods=['POST'])
+def search():
+    try:
+        data = request.get_json()
+        query = data.get('query', '').strip()
+        if not query:
+            return jsonify({"error": "Query is required"}), 400
+
+        response = generate_response(query)
+        return jsonify({"generated_response": response}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    chatbot()
+    app.run(host="0.0.0.0", port=5000)

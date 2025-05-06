@@ -50,7 +50,7 @@ const MainChat: React.FC = () => {
     try {
       console.log("Sending request to server with query:", inputValue); // Debugging log
 
-      const response = await fetch("http://localhost:5000/search", {
+      const response = await fetch("http://127.0.0.1:5000/search", { // Updated URL
         method: "POST",
         headers: {
           "Content-Type": "application/json",
