@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Book, Download, FileText, Image, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,13 +8,11 @@ interface Material {
   type: 'pdf' | 'video' | 'image' | 'doc';
   size: string;
   course: string;
+  path: string;
 }
 
 const materials: Material[] = [
-  { id: 1, title: 'Week 5 Lecture Notes', type: 'pdf', size: '2.4 MB', course: 'Math 101' },
-  { id: 2, title: 'Research Paper Guidelines', type: 'doc', size: '1.1 MB', course: 'History 202' },
-  { id: 3, title: 'Programming Tutorial Video', type: 'video', size: '45 MB', course: 'CS 310' },
-  { id: 4, title: 'Lab Experiment Images', type: 'image', size: '8.7 MB', course: 'Physics 104' },
+  { id: 1, title: 'Week 5 Lecture Notes', type: 'pdf', size: '2.4 MB', course: 'Math 101',path:'/materials/DL-UNIT-3-Notes' }
 ];
 
 const MaterialsWidget: React.FC = () => {
@@ -75,9 +72,13 @@ const MaterialsWidget: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Button variant="ghost" size="icon" className="text-align-muted hover:text-white">
+            <a
+              href={material.path}
+              download
+              className="text-align-muted hover:text-white"
+            >
               <Download className="h-4 w-4" />
-            </Button>
+            </a>
           </div>
         ))}
       </div>

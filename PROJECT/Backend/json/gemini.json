@@ -1,5 +1,149 @@
 [
   {
+    "title": "Greeting",
+    "text": "Hello! How can I assist you today?"
+  },
+  {
+    "title": "Greeting",
+    "text": "Hi there! What can I help you with?"
+  },
+  {
+    "title": "What is the last date for submitting the admission form?",
+    "text": "The last date for submitting the admission form varies each year. Please refer to the official college website or contact the admissions office for the latest deadline."
+  },
+  {
+    "title": "Are there any entrance exams required for admission?",
+    "text": "Some courses require entrance exams while others may offer admission based on merit. Please check the eligibility criteria for your chosen course."
+  },
+  {
+    "title": "What documents do I need to submit during the admission process?",
+    "text": "Typically, you need to submit your 10th and 12th marksheets, transfer certificate, ID proof, passport-size photographs, and caste/income certificates if applicable."
+  },
+  {
+    "title": "Is there a reservation policy for SC/ST/OBC or other categories?",
+    "text": "Yes, the college follows government-mandated reservation policies for SC, ST, OBC, EWS, and other categories."
+  },
+  {
+    "title": "What is the procedure for fee payment? Can I pay in installments?",
+    "text": "Fee payment is usually done online or at the campus office. Some colleges offer installment options depending on the course and financial conditions."
+  },
+  {
+    "title": "What undergraduate/postgraduate programs are offered?",
+    "text": "The college offers a range of undergraduate and postgraduate programs across various disciplines. Please refer to the courses section on the official website."
+  },
+  {
+    "title": "Can I change my branch or major after the first year?",
+    "text": "Branch changes may be allowed based on academic performance and seat availability. Please consult the academic office for detailed rules."
+  },
+  {
+    "title": "What is the syllabus or curriculum for my course?",
+    "text": "The syllabus for each course is available on the official college website or from the academic department."
+  },
+  {
+    "title": "Are there any add-on or certificate courses offered?",
+    "text": "Yes, many departments offer skill-based add-on or certificate courses to enhance student employability."
+  },
+  {
+    "title": "How are internal marks and attendance calculated?",
+    "text": "Internal marks are based on assignments, quizzes, tests, and attendance. Minimum attendance of 75% is usually required."
+  },
+  {
+    "title": "Is hostel accommodation available for all students?",
+    "text": "Yes, hostel facilities are available for students based on availability. Prior registration is required."
+  },
+  {
+    "title": "What are the facilities in the hostel (Wi-Fi, food, laundry, etc.)?",
+    "text": "Hostels are equipped with Wi-Fi, mess facilities, security, and sometimes laundry services. Facilities may vary for boys and girls hostels."
+  },
+  {
+    "title": "Is there a library and how do we access it?",
+    "text": "Yes, the college has a well-equipped library. Students can access it using their ID cards and can also borrow books as per the lending policy."
+  },
+  {
+    "title": "Are there any transportation or college bus facilities?",
+    "text": "Yes, the college provides transportation facilities with multiple routes. Routes and timings are available on the college website."
+  },
+  {
+    "title": "Does the college have medical or emergency facilities on campus?",
+    "text": "Yes, the campus includes a health center with basic medical facilities and first-aid for students."
+  },
+  {
+    "title": "What clubs, societies, or student organizations can I join?",
+    "text": "Students can join various technical, cultural, and sports clubs based on their interests. Details are shared during orientation."
+  },
+  {
+    "title": "How is the ragging policy enforced on campus?",
+    "text": "Ragging is strictly prohibited. The college has an anti-ragging committee and a zero-tolerance policy towards any such incidents."
+  },
+  {
+    "title": "Is there a mentorship or counseling system for new students?",
+    "text": "Yes, new students are assigned mentors and can also avail academic or personal counseling through the student support center."
+  },
+  {
+    "title": "Are there any orientation programs for freshers?",
+    "text": "Yes, an orientation program is conducted at the beginning of the academic year to introduce students to the campus, faculty, and resources."
+  },
+  {
+    "title": "How does the college support student mental health?",
+    "text": "The college offers counseling services and mental wellness sessions through trained professionals for students who need support."
+  },
+  {
+    "title": "What is the placement record of the college for my course?",
+    "text": "Placement records vary by department. You can check the placement statistics and reports on the college website or contact the placement cell."
+  },
+  {
+    "title": "Are internships mandatory or supported by the college?",
+    "text": "Many courses require internships. The college also helps students find internship opportunities through industry tie-ups and placement support."
+  },
+  {
+    "title": "Which companies visit the campus for recruitment?",
+    "text": "Top companies across sectors visit for placements. A list of recruiters is usually available in the college placement brochure."
+  },
+  {
+    "title": "Is there a training and placement cell? How can I register with it?",
+    "text": "Yes, the college has a dedicated training and placement cell. Registration usually opens at the beginning of the academic year through an online portal."
+  },
+  {
+    "title": "Are there any foreign exchange or study abroad programs?",
+    "text": "Yes, the college collaborates with international institutions for exchange programs. Interested students can apply through the international cell."
+  },
+  {
+    "title": "Principal of KMIT",
+    "text": "The principal of KMIT is Dr. B L Malleswari."
+  },
+  {
+    "title": "Minimum Attendance at KMIT",
+    "text": "The minimum attendance required at KMIT is 75%."
+  },
+  {
+    "title": "Location of KMIT",
+    "text": "KMIT is located in Narayanguda, Hyderabad."
+  },
+  {
+    "title": "Director of KMIT",
+    "text": "The Director of KMIT is Mr. Neil Gogte."
+  },
+  {
+    "title": "Founder of KMIT",
+    "text": "The Founder of KMIT is also Mr. Neil Gogte."
+  },
+  {
+    "title": "College Timings at KMIT",
+    "text": "College timings are generally from 9:00 AM to 4:30 PM."
+  },
+  {
+    "title": "Attendance Percentage Required at KMIT",
+    "text": "You must maintain at least 75% attendance to be eligible for exams."
+  },
+  {
+    "title": "Departments in KMIT",
+    "text": "KMIT has H&S department, AI&ML department, CSE department, CSD department, and IT department."
+  },
+  {
+    "title": "KMIT sustains diversity of all",
+    "text": "KMIT sustains diversity of all forms and categories. From systemic to constitutional, these diversities thrive and add to the framework and ambience of the institution. The institution believes that diversity facilitates positive mobility and effectiveness—which are essential for creating an organizational image that every Higher Educational Institution (HEI) works for. The varied levels of diversity within an institution help in addressing issues of the job market which the students eagerly look forward at end of their program. Diversity also throws open opportunities for experimenting with innovation across the processes of the institution."
+  },
+  {
     "title": "KMIT KESHAV MEMORIAL INSTITUTE",
     "text": "KMIT KESHAV MEMORIAL INSTITUTE OF TECHNOLOGY"
   },
@@ -54,6 +198,10 @@
   {
     "title": "Mission :",
     "text": "Mission :"
+  },
+  {
+    "title": "Cutoff ",
+    "text": "Here are the category-wise closing ranks for KMIT Hyderabad TS-EAMCET 2024 (Round 1):\n\n- General: 6686\n- SC: 135346\n- ST: 35986\n- BCA: 15309\n- BCB: 16462\n- BCC: 13860\n- BCD: 8382\n- BCE: 12280"
   },
   {
     "title": "To provide a learning environm",

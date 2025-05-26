@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Align from "./pages/Align";
+import Profile from "./components/layout/profile";  
 import StudentLogin from "./pages/StudentLogin";
 import ParentLogin from "./pages/ParentLogin";
 import MainChat from "./components/chat/MainChat";
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="/student-login" element={<StudentLogin />} />
           <Route path="/parent-login" element={<ParentLogin />} />
           <Route path="/chat" element={<MainChat />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/AppLayout0" element={<AppLayout0 />} />
           <Route path="/AppLayout" element={<AppLayout />} />
            {/* Added route for AppLayout0 */}

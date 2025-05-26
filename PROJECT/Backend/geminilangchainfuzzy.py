@@ -16,7 +16,7 @@ GOOGLE_API_KEY = "AIzaSyDZHrVTWD8gfh_OtShy-cmhWYuNu4DoRO8"
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Load JSON Data
-json_path = r"C:\Users\addan\OneDrive\Documents\GitHub\chatbot\PROJECT\back\gemini.json"
+json_path = r"C:\Users\addan\OneDrive\Documents\GitHub\chatbot\PROJECT\Backend\json\gemini.json"
 with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
@@ -170,6 +170,19 @@ def enter_admin_mode():
 app = Flask(__name__)
 CORS(app)  # Enable CORS for cross-origin requests
 
+#@app.route('/search', methods=['POST'])
+#def search():
+ #   try:
+  #      data = request.get_json()
+    #    query = data.get('query', '').strip()
+   #     if not query:
+     #       return jsonify({"error": "Query is required"}), 400
+
+       # response = generate_response(query)
+      #  return jsonify({"generated_response": response}), 200
+   # except Exception as e:
+    #    return jsonify({"error": str(e)}), 500
+
 @app.route('/search', methods=['POST'])
 def search():
     try:
@@ -178,10 +191,15 @@ def search():
         if not query:
             return jsonify({"error": "Query is required"}), 400
 
+        # Check if the query is '/admin' to enter admin mode
+        if query == "/admin":
+            enter_admin_mode()
+            return jsonify({"message": "Entered Admin Mode. Check the console for further actions."}), 200
+
         response = generate_response(query)
         return jsonify({"generated_response": response}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

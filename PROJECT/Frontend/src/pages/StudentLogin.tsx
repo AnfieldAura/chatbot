@@ -52,7 +52,7 @@ const StudentLogin = () => {
                 rollNumber ? "text-xs -top-2.5 text-blue-600" : ""
               }`}
             >
-              Your roll number (e.g., 23BD1A6621)
+              
             </label>
             <input
               type="text"
