@@ -1,7 +1,6 @@
+
 import React, { useState } from 'react';
-import Header from './Header';
-import LeftSidebar from './LeftSidebar';
-import RightSidebar from './RightSidebar';
+import Header0 from './Header0';
 import MainChat from '../chat/MainChat';
 import Dashboard from '../dashboard/Dashboard';
 
@@ -22,19 +21,14 @@ const AppLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-white text-black">
-      <Header 
+    <div className="flex flex-col h-screen overflow-hidden bg-align">
+      <Header0 
         toggleLeftSidebar={() => setIsMobileLeftSidebarOpen(!isMobileLeftSidebarOpen)} 
         toggleRightSidebar={() => setIsMobileRightSidebarOpen(!isMobileRightSidebarOpen)} 
       />
       
       <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar (Dashboard Navigation) */}
-        <LeftSidebar 
-          onDashboardItemClick={handleDashboardItemClick}
-          isOpen={isMobileLeftSidebarOpen}
-          onClose={() => setIsMobileLeftSidebarOpen(false)}
-        />
+        
         
         {/* Main Content Area */}
         <div className="flex-1 overflow-hidden flex flex-col">
@@ -48,11 +42,7 @@ const AppLayout: React.FC = () => {
           )}
         </div>
         
-        {/* Right Sidebar (History) */}
-        <RightSidebar 
-          isOpen={isMobileRightSidebarOpen}
-          onClose={() => setIsMobileRightSidebarOpen(false)}
-        />
+        
       </div>
     </div>
   );
