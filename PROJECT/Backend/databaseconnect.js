@@ -10,10 +10,13 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-const mongoURI = "mongodb://localhost:27017/studentDB"; // Database name is 'studentDB'
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log("Connected to MongoDB"))
-    .catch((err) => console.error("Error connecting to MongoDB:", err));
+const mongoURI = "mongodb+srv://admin:admin123@studentdb.cc5j39j.mongodb.net/?retryWrites=true&w=majority&appName=StudentDB"; // Database name is 'studentDB'
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log("✅ Connected to MongoDB Atlas"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err.message));
 
 // Define a Mongoose Schema and Model
 const studentSchema = new mongoose.Schema({
@@ -26,7 +29,7 @@ const studentSchema = new mongoose.Schema({
 });
 
 // Explicitly specify the collection name as "Student"
-const Student = mongoose.model("Student", studentSchema, "Student");
+const Student = mongoose.model("StudentDB", studentSchema, "rno");
 
 // Root Route
 app.get("/", (req, res) => {
