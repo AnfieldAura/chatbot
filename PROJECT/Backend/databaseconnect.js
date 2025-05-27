@@ -13,7 +13,7 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB Connection
-const mongoURI = "mongodb+srv://admin:admin123@studentdb.cc5j39j.mongodb.net/?retryWrites=true&w=majority&appName=StudentDB";
+const mongoURI = "mongodb+srv://admin:admin123@studentdb.cc5j39j.mongodb.net/StudentDB?retryWrites=true&w=majority&appName=StudentDB";
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
