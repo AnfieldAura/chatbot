@@ -45,6 +45,7 @@ predefined_answers = {
     "who is the principal of kmit": "The principal of KMIT is Dr. B L Malleswari.",
     "what is the minimum attendance": "The minimum attendance required at KMIT is 75%.",
     "where is kmit located": "KMIT is located in Narayanguda, Hyderabad.",
+    "What are the academic regulations for 2024?": "The academic regulations for KR23 include maintaining a minimum of 75% attendance, passing all subjects with a minimum of 40% marks, and completing all assignments on time.",
     "who is the director of kmit": "The Director of KMIT is Mr. Neil Gogte.",
     "who is the founder of kmit": "The Founder of KMIT is also Mr. Neil Gogte.",
     "what are the college timings": "College timings are generally from 9:00 AM to 4:30 PM.",
