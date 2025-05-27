@@ -8,7 +8,7 @@ const Index = () => {
       <div className="absolute inset-0">
         <svg
           className="absolute bottom-0 w-full h-auto"
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="C:\Users\addan\OneDrive\Documents\GitHub\chatbot\PROJECT\chatbot-deepika\chatbot-main\PROJECT\Frontend\Bot-Icon.gif"
           viewBox="0 0 1440 320"
         >
           <path

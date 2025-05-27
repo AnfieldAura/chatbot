@@ -3,26 +3,27 @@ import { GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const StudentLogin = () => {
-  const [rollNumber, setRollNumber] = useState(""); // Roll number input
-  const [password, setPassword] = useState(""); // Password input
-  const [error, setError] = useState(""); // Error message
-  const navigate = useNavigate(); // React Router's navigation hook
+  const [rollNumber, setRollNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    const trimmedRoll = rollNumber.trim().toUpperCase();
 
     try {
-        const response = await fetch("https://chatbot-1-29k2.onrender.com/api/login", {
+      const response = await fetch("https://chatbot-1-29k2.onrender.com/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rollNumber, password }),
+        body: JSON.stringify({ rollNumber: trimmedRoll, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
-        navigate("/AppLayout"); // Redirect to AppLayout
+        navigate("/AppLayout");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Invalid roll number or password.");
@@ -40,15 +41,10 @@ const StudentLogin = () => {
             <GraduationCap className="h-14 w-14 text-white" />
           </div>
         </div>
-        <h1 className="text-5xl font-extrabold text-center text-white mb-8">
-          STUDENT LOGIN
-        </h1>
+        <h1 className="text-5xl font-extrabold text-center text-white mb-8">STUDENT LOGIN</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label
-              htmlFor="rollNumber"
-              className="block text-lg font-medium text-white"
-            >
+            <label htmlFor="rollNumber" className="block text-lg font-medium text-white">
               Roll Number
             </label>
             <input
@@ -61,10 +57,7 @@ const StudentLogin = () => {
             />
           </div>
           <div className="mb-8">
-            <label
-              htmlFor="password"
-              className="block text-lg font-medium text-white"
-            >
+            <label htmlFor="password" className="block text-lg font-medium text-white">
               Password
             </label>
             <input
