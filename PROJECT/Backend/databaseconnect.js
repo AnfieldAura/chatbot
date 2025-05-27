@@ -30,7 +30,7 @@ const studentSchema = new mongoose.Schema({
   rollNumber: { type: String, required: true },
   password: { type: String, required: true },
 });
-const Student = mongoose.model("StudentDB", studentSchema, "rno");
+const Student = mongoose.model("Student", studentSchema, "rno");
 
 // Routes
 app.get("/", (req, res) => {
