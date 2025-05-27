@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const app = express();
-const PORT = 5501; // Port number
+const PORT = process.env.PORT || 5501; // Port number
 
 // Middleware
 app.use(cors());
@@ -77,6 +77,7 @@ app.get("/api/students", async (req, res) => {
         res.status(500).json({ error: "Server error", details: err.message });
     }
 });
+
 
 // Start the Server
 app.listen(PORT, () => {

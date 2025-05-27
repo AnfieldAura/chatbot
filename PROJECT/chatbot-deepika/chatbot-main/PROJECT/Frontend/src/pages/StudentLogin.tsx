@@ -13,7 +13,7 @@ const StudentLogin = () => {
     setError("");
 
     try {
-        const response = await fetch("https://srv-d0quj70dl3ps739302i0.onrender.com/api/login", {
+        const response = await fetch("https://chatbot-1-29k2.onrender.com/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ rollNumber, password }),
