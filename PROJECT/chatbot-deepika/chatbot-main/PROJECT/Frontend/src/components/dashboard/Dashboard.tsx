@@ -48,15 +48,14 @@ const Dashboard: React.FC<DashboardProps> = ({ activeWidget, onBackClick }) => {
             </div>
           ) : null}
 
-          {/* Attendance Widget */}
-          {localActiveWidget === 'attendance' || !localActiveWidget ? (
-            <div>
-              <AttendanceWidget
-                onActivate={() => setLocalActiveWidget('attendance')}
-                onDeactivate={() => setLocalActiveWidget(null)}
-              />
-            </div>
-          ) : null}
+          {/* Daily Quote Widget */}
+{/*
+{localActiveWidget === 'dailyQuote' || !localActiveWidget ? (
+  <div>
+    <QuoteWidget />
+  </div>
+) : null}
+*/}
 
           {/* TimeTable Widget */}
           {localActiveWidget === 'timetable' || !localActiveWidget ? (
@@ -69,6 +68,13 @@ const Dashboard: React.FC<DashboardProps> = ({ activeWidget, onBackClick }) => {
           {localActiveWidget === 'materials' || !localActiveWidget ? (
             <div>
               <MaterialsWidget />
+            </div>
+          ) : null}
+          
+          {/* Attendance Widget */}
+          {localActiveWidget === 'attendance' || !localActiveWidget ? (
+            <div>
+              <AttendanceWidget />
             </div>
           ) : null}
 

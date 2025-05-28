@@ -10,6 +10,12 @@ from difflib import get_close_matches
 from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # Set your Gemini API key
 GOOGLE_API_KEY = "AIzaSyDZHrVTWD8gfh_OtShy-cmhWYuNu4DoRO8"
@@ -201,6 +207,59 @@ def search():
         return jsonify({"generated_response": response}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500    
+
+@app.route('/get-attendance', methods=['POST'])
+def get_attendance():
+    try:
+        data = request.get_json()
+        roll_number = data.get('rollNumber', '').strip()
+        if not roll_number:
+            return jsonify({"error": "Roll number is required"}), 400
+
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        driver = webdriver.Chrome(options=chrome_options)
+
+        try:
+            driver.get("https://spectra-beta.vercel.app/")
+            time.sleep(2)
+
+            input_box = driver.find_element(By.CSS_SELECTOR, "input[type='text']")
+            input_box.clear()
+            input_box.send_keys(roll_number)
+
+            submit_btn = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
+            submit_btn.click()
+
+            # Wait for either the attendance or an error message
+            try:
+                percentage_elem = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "span.text-sm.font-semibold.text-blue-600"))
+                )
+                percentage_text = percentage_elem.text.strip()
+                match = re.search(r'(\d+(\.\d+)?)', percentage_text)
+                if match:
+                    attendance = float(match.group(1))
+                    return jsonify({"attendance": attendance}), 200
+                else:
+                    return jsonify({"error": "Attendance percentage not found"}), 404
+            except Exception:
+                # If not found, check for a "not found" message or similar
+                print(driver.page_source)
+                return jsonify({"error": "Attendance not found or search failed."}), 404
+
+        except Exception as e:
+            print("Error occurred:", e)
+            print(driver.page_source)
+            return jsonify({"error": "Failed to fetch attendance. Please try again later."}), 500
+        finally:
+            driver.quit()
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

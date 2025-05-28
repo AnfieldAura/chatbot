@@ -11,6 +11,7 @@ import ParentLogin from "./pages/ParentLogin";
 import MainChat from "./components/chat/MainChat";
 import AppLayout0 from "./components/layout/AppLayout0"; // Corrected import for AppLayout0
 import AppLayout from "./components/layout/AppLayout"; // Importing AppLayout for future use
+import Profile from "./components/layout/profile";  
 const queryClient = new QueryClient();
 
 /**
@@ -49,8 +50,9 @@ const App = () => (
           <Route path="/student-login" element={<StudentLogin />} />
           <Route path="/parent-login" element={<ParentLogin />} />
           <Route path="/chat" element={<MainChat />} />
-          <Route path="/AppLayout0" element={<AppLayout0 />} />
-          <Route path="/AppLayout" element={<AppLayout />} />
+          <Route path="/AppLayout0" element={<AppLayout />} />
+          <Route path="/AppLayout" element={<AppLayout0 />} />
+          <Route path="/profile" element={<Profile />} />
            {/* Added route for AppLayout0 */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

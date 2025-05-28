@@ -14,7 +14,6 @@ const dashboardItems = [
   { id: 'attendance', name: 'Attendance', icon: Award },
   { id: 'materials', name: 'Saved Materials', icon: Book },
   { id: 'timetable', name: 'Time Table', icon: Calendar }, // New button added
-  { id: 'quote', name: 'Daily Quote', icon: Quote },
 ];
 
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ onDashboardItemClick, isOpen, onClose }) => {

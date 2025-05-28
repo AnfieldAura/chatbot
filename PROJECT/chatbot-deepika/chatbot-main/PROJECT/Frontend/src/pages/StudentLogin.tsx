@@ -14,11 +14,11 @@ const StudentLogin = () => {
     const trimmedRoll = rollNumber.trim().toUpperCase();
 
     try {
-      const response = await fetch("https://chatbot-1-29k2.onrender.com/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rollNumber: trimmedRoll, password }),
-      });
+      const response = await fetch("http://localhost:5502/api/login", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ rollNumber: trimmedRoll, password }),
+});
 
       if (response.ok) {
         const data = await response.json();
