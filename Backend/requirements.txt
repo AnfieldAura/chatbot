@@ -7,3 +7,5 @@ scikit-learn
 faiss-cpu
 google-generativeai
 numpy
+pymongo
+express
