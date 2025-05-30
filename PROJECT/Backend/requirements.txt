@@ -1,9 +1,0 @@
-flask
-flask-cors
-selenium
-webdriver-manager
-sentence-transformers
-scikit-learn
-faiss-cpu
-google-generativeai
-numpy
