@@ -14,7 +14,7 @@ const StudentLogin = () => {
     const trimmedRoll = rollNumber.trim().toUpperCase();
 
     try {
-      const response = await fetch("http://localhost:5502/api/login", {
+      const response = await fetch("http://localhost:5000/api/login", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ rollNumber: trimmedRoll, password }),

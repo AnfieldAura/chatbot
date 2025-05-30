@@ -50,8 +50,8 @@ const App = () => (
           <Route path="/student-login" element={<StudentLogin />} />
           <Route path="/parent-login" element={<ParentLogin />} />
           <Route path="/chat" element={<MainChat />} />
-          <Route path="/AppLayout0" element={<AppLayout />} />
-          <Route path="/AppLayout" element={<AppLayout0 />} />
+          <Route path="/AppLayout0" element={<AppLayout0 />} />
+          <Route path="/AppLayout" element={<AppLayout />} />
           <Route path="/profile" element={<Profile />} />
            {/* Added route for AppLayout0 */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

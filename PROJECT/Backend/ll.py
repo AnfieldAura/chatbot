@@ -11,6 +11,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+
+
+from pymongo import MongoClient
+# Connect to MongoDB
+mongo_client = MongoClient("mongodb://localhost:27017/")
+db = mongo_client["studentDB"]  # Database name
+queries_collection = db["ChatHistory"]  # Collection name
+
 # Set your Gemini API key
 GOOGLE_API_KEY = "AIzaSyDZHrVTWD8gfh_OtShy-cmhWYuNu4DoRO8"
 genai.configure(api_key=GOOGLE_API_KEY)

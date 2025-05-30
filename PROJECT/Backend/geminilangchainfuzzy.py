@@ -17,6 +17,9 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from pymongo import MongoClient
 import logging
 
 # Set your Gemini API key
@@ -24,7 +27,7 @@ GOOGLE_API_KEY = "AIzaSyDZHrVTWD8gfh_OtShy-cmhWYuNu4DoRO8"
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # Load JSON Data
-json_path = os.path.join("json", "gemini.json")
+json_path = r"C:\Users\addan\OneDrive\Documents\GitHub\chatbot\PROJECT\Backend\json\gemini.json"
 with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
@@ -191,6 +194,42 @@ CORS(app)  # Enable CORS for cross-origin requests
       #  return jsonify({"generated_response": response}), 200
    # except Exception as e:
     #    return jsonify({"error": str(e)}), 500
+
+
+# MongoDB connection (update URI for production/Atlas)
+mongo_uri = "mongodb+srv://admin:admin123@studentdb.cc5j39j.mongodb.net/?retryWrites=true&w=majority&appName=StudentDB"
+client = MongoClient(mongo_uri)
+db = client["Student"]
+students_collection = db["Student"]
+
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    data = request.get_json()
+    roll_number = data.get("rollNumber", "")
+    password = data.get("password", "")
+
+    if not roll_number or not password:
+        return jsonify({"error": "Roll number and password are required"}), 400
+
+    print("Searching for rollNumber:", roll_number)
+    student = students_collection.find_one({"rollNumber": roll_number})
+    print("Student found:", student)
+
+    if not student:
+        return jsonify({"error": "Roll number not found"}), 404
+
+    if student.get("password") != password:
+        return jsonify({"error": "Invalid password"}), 401
+
+    # Remove password before sending student data
+    student.pop("password", None)
+    student["_id"] = str(student["_id"])
+    return jsonify({"message": "Login successful", "student": student}), 200
+
+@app.route("/api/students", methods=["GET"])
+def api_students():
+    students = list(students_collection.find({}, {"name": 1, "rollNumber": 1, "_id": 0}))
+    return jsonify(students), 200
 
 @app.route('/search', methods=['POST'])
 def search():

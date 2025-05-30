@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* If you are not using Tailwind CSS, remove these lines. 
+   If you are using Tailwind, make sure your build process supports it. */
 
 @layer base {
   :root {
@@ -70,8 +69,9 @@
 
   /* Removed @apply border-border */
   body {
-    @apply bg-background text-foreground;
-    border: 1px solid var(--border); /* Apply border using the --border variable */
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border)); /* Apply border using the --border variable */
   }
 }
 
@@ -90,7 +90,15 @@
   }
 
   .dashboard-card {
-    @apply bg-secondary rounded-xl shadow-lg p-4 transition-all hover:shadow-xl hover:translate-y-[-2px];
+    background-color: hsl(var(--secondary));
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+    padding: 1rem;
+    transition: all 0.2s;
+  }
+  .dashboard-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
   }
 
   .align-gradient {

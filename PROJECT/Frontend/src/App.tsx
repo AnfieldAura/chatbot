@@ -10,8 +10,8 @@ import Profile from "./components/layout/profile";
 import StudentLogin from "./pages/StudentLogin";
 import ParentLogin from "./pages/ParentLogin";
 import MainChat from "./components/chat/MainChat";
-import AppLayout0 from "./components/layout/AppLayout0"; // Corrected import for AppLayout0
-import AppLayout from "./components/layout/AppLayout"; // Importing AppLayout for future use
+import AppLayout0 from "./components/layout/AppLayout"; // Corrected import for AppLayout0
+import AppLayout from "./components/layout/AppLayout0"; // Importing AppLayout for future use
 const queryClient = new QueryClient();
 
 /**
