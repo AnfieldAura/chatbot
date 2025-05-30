@@ -1,0 +1,10 @@
+flask
+flask-cors
+faiss-cpu
+sentence-transformers
+scikit-learn
+numpy
+google-generativeai
+selenium
+webdriver-manager
+pymongo
