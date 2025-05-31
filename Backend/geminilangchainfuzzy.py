@@ -4,10 +4,8 @@ import faiss
 import time
 import re
 import numpy as np
-import google.generativeai as genai
-from sentence_transformers import SentenceTransformer
+import openai
 from difflib import get_close_matches
-from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from selenium import webdriver
@@ -17,40 +15,21 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 from pymongo import MongoClient
 import logging
 
-# Set your Gemini API key
-GOOGLE_API_KEY = "AIzaSyDZHrVTWD8gfh_OtShy-cmhWYuNu4DoRO8"
-genai.configure(api_key=GOOGLE_API_KEY)
+# Set your OpenAI API key
+openai.api_key = "YOUR_OPENAI_API_KEY"
 
-# Load JSON Data
-json_path = os.path.join(os.path.dirname(__file__), "json", "gemini.json")
+# Paths
+PREDEFINED_QA_PATH = os.path.join(os.path.dirname(__file__), "predefined_qa.json")
+json_path = r"C:\\Users\\addan\\OneDrive\\Documents\\GitHub\\chatbot\\Backend\\json\\scrape123.json"
+
+# Load JSON data
 with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
 
-print(f"Loaded {len(data)} entries from JSON.")
-
-# Prepare text chunks and compute embeddings
-titles = [entry["title"] for entry in data]
-text_chunks = [entry["text"] for entry in data]
-combined_inputs = [f"{titles[i]}: {text_chunks[i]}" for i in range(len(data))]
-
-embedding_model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
-
-embeddings = embedding_model.encode(combined_inputs, convert_to_numpy=True).astype("float32")
-
-index = faiss.IndexFlatL2(embeddings.shape[1])
-index.add(embeddings)
-print("✅ FAISS index created and embeddings added.")
-
-# Normalize query
-def normalize_query(query):
-    return query.lower().strip().replace("?", "")
-
-# Predefined answer store
+# Predefined answers
 predefined_answers = {
     "hi": "Hello! How can I assist you today?",
     "hello": "Hi there! What can I help you with?",
@@ -65,139 +44,102 @@ predefined_answers = {
     "what are the departments in kmit": "KMIT has H&S department, AI&ML department, CSE department, CSD department, and IT department."
 }
 
-# Embed predefined questions
-def embed_predefined_questions():
-    questions = list(predefined_answers.keys())
-    embeddings = embedding_model.encode(questions, convert_to_numpy=True).astype("float32")
-    return questions, embeddings
+# Load and save functions for predefined Q&A
+def load_predefined_qa():
+    if os.path.exists(PREDEFINED_QA_PATH):
+        with open(PREDEFINED_QA_PATH, "r", encoding="utf-8") as f:
+            qa_list = json.load(f)
+        return {item["question"]: item["answer"] for item in qa_list}
+    return {}
 
-predefined_questions, predefined_embeddings = embed_predefined_questions()
+def save_predefined_qa(predefined):
+    qa_list = [{"question": q, "answer": a} for q, a in predefined.items()]
+    with open(PREDEFINED_QA_PATH, "w", encoding="utf-8") as f:
+        json.dump(qa_list, f, indent=2)
 
-# Smart match from predefined answers
+predefined_answers.update(load_predefined_qa())
+
+# Embedding via OpenAI
+EMBEDDING_MODEL = "text-embedding-3-small"
+
+def get_openai_embedding(text):
+    response = openai.Embedding.create(input=text, model=EMBEDDING_MODEL)
+    return response["data"][0]["embedding"]
+
+# Prepare data
+def load_combined_data():
+    combined = data.copy()
+    for q, a in predefined_answers.items():
+        combined.append({"title": q, "text": a})
+    return combined
+
+def rebuild_faiss_index():
+    global titles, text_chunks, combined_inputs, embeddings, index
+    combined_data = load_combined_data()
+    titles = [entry["title"] for entry in combined_data]
+    text_chunks = [entry["text"] for entry in combined_data]
+    combined_inputs = [f"{titles[i]}: {text_chunks[i]}" for i in range(len(combined_data))]
+    embeddings = np.array([get_openai_embedding(text) for text in combined_inputs], dtype="float32")
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
+
+rebuild_faiss_index()
+
+predefined_questions = list(predefined_answers.keys())
+predefined_embeddings = np.array([get_openai_embedding(q) for q in predefined_questions], dtype="float32")
+
+# Query handlers
+def normalize_query(query):
+    return query.lower().strip().replace("?", "")
+
 def get_predefined_answer_semantic(query):
-    query_embedding = embedding_model.encode([query], convert_to_numpy=True)
-    sims = cosine_similarity(query_embedding, predefined_embeddings)[0]
+    query_embedding = np.array([get_openai_embedding(query)], dtype="float32")
+    sims = np.dot(predefined_embeddings, query_embedding[0])
     best_idx = np.argmax(sims)
     if sims[best_idx] > 0.80:
         return predefined_answers[predefined_questions[best_idx]]
     return None
 
-# Fuzzy fallback
 def get_predefined_answer_fuzzy(query):
     matches = get_close_matches(query, predefined_answers.keys(), n=1, cutoff=0.8)
     if matches:
         return predefined_answers[matches[0]]
     return None
 
-# Combine both methods
 def get_predefined_answer(query):
     normalized = normalize_query(query)
     return get_predefined_answer_semantic(normalized) or get_predefined_answer_fuzzy(normalized)
 
-# Retrieve documents from JSON using hybrid search
 def retrieve_relevant_docs(query, top_k=10):
     query = normalize_query(query)
-    query_embedding = embedding_model.encode([query], convert_to_numpy=True).astype("float32")
+    query_embedding = np.array([get_openai_embedding(query)], dtype="float32")
     distances, indices = index.search(query_embedding, top_k)
-
     semantic_results = [f"{titles[i]}: {text_chunks[i]}" for i in indices[0] if i < len(text_chunks)]
+    return "\n\n".join(semantic_results[:top_k]) if semantic_results else "No relevant documents found."
 
-    query_words = set(query.split())
-    keyword_matches = []
-    for i in range(len(data)):
-        full_text = f"{titles[i]} {text_chunks[i]}".lower()
-        if any(word in full_text for word in query_words):
-            keyword_matches.append(f"{titles[i]}: {text_chunks[i]}")
-
-    combined_results = list(dict.fromkeys(semantic_results + keyword_matches))
-
-    context = ""
-    for chunk in combined_results:
-        if len(context) + len(chunk) > 4000:
-            break
-        context += "\n\n" + chunk
-
-    return context.strip() if context else "No relevant documents found."
-
-# Generate answer with Gemini
 def generate_response(query):
     answer = get_predefined_answer(query)
     if answer:
         return answer
-
     context = retrieve_relevant_docs(query)
-
     prompt = (
         "You are a helpful assistant. Use the context to answer the question below. "
-        f"Context:\n{context}\n\n"
-        f"Question: {query}\nAnswer:"
+        f"Context:\n{context}\n\nQuestion: {query}\nAnswer:"
     )
-
-    model = genai.GenerativeModel("gemini-1.5-flash")
-    config = genai.types.GenerationConfig(
-        temperature=0.9,
-        top_p=0.9,
-        top_k=40,
-        max_output_tokens=512
-    )
-
     try:
-        response = model.generate_content(prompt, generation_config=config)
-        return response.text.strip()
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+        return response["choices"][0]["message"]["content"].strip()
     except Exception as e:
         return f"❌ Error generating response: {str(e)}"
 
-# Admin mode for editing/adding predefined answers
-def enter_admin_mode():
-    admin_password = "admin123"
-    while True:
-        print("\nEntered Admin Mode.")
-        print("Type '/exitadmin' to leave Admin Mode.")
-        password = input("Enter admin password to modify answers: ")
-        if password != admin_password:
-            print("❌ Incorrect password.")
-            continue
-
-        while True:
-            print("\nType '/exitadmin' to exit admin mode.")
-            query = input("Enter the question you want to modify answer for: ").lower().strip()
-            if query == "/exitadmin":
-                print("Exiting admin mode...")
-                return
-
-            if query not in predefined_answers:
-                print(f"⚠️ No predefined answer for '{query}'. A new entry will be created.")
-            else:
-                print(f"✏️ Editing existing answer for '{query}'")
-
-            new_answer = input(f"Enter the new answer for '{query}': ").strip()
-            predefined_answers[query] = new_answer
-
-            # Refresh predefined embeddings
-            global predefined_questions, predefined_embeddings
-            predefined_questions, predefined_embeddings = embed_predefined_questions()
-
-            print(f"✅ Answer for '{query}' updated and saved.")
-
-# Flask API
+# Flask setup
 app = Flask(__name__)
-CORS(app)  # Enable CORS for cross-origin requests
+CORS(app)
 
-#@app.route('/search', methods=['POST'])
-#def search():
- #   try:
-  #      data = request.get_json()
-    #    query = data.get('query', '').strip()
-   #     if not query:
-     #       return jsonify({"error": "Query is required"}), 400
-
-       # response = generate_response(query)
-      #  return jsonify({"generated_response": response}), 200
-   # except Exception as e:
-    #    return jsonify({"error": str(e)}), 500
-
-
-# MongoDB connection (update URI for production/Atlas)
 mongo_uri = "mongodb+srv://admin:admin123@studentdb.cc5j39j.mongodb.net/"
 client = MongoClient(mongo_uri)
 db = client["Student"]
@@ -213,14 +155,11 @@ def api_login():
         return jsonify({"error": "Roll number and password are required"}), 400
 
     student = students_collection.find_one({"rollNumber": roll_number})
-
     if not student:
         return jsonify({"error": "Roll number not found"}), 404
-
     if student.get("password") != password:
         return jsonify({"error": "Invalid password"}), 401
 
-    # Remove password before sending student data
     student.pop("password", None)
     student["_id"] = str(student["_id"])
     return jsonify({"message": "Login successful", "student": student}), 200
@@ -237,16 +176,10 @@ def search():
         query = data.get('query', '').strip()
         if not query:
             return jsonify({"error": "Query is required"}), 400
-
-        # Check if the query is '/admin' to enter admin mode
-        if query == "/admin":
-            enter_admin_mode()
-            return jsonify({"message": "Entered Admin Mode. Check the console for further actions."}), 200
-
         response = generate_response(query)
         return jsonify({"generated_response": response}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500    
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/get-attendance', methods=['POST'])
 def get_attendance():
@@ -270,30 +203,29 @@ def get_attendance():
         try:
             driver.get("https://spectra-beta.vercel.app/search")
 
-            # Locate the search box and enter the roll number
             search_box = WebDriverWait(driver, 15).until(
                 EC.presence_of_element_located((By.TAG_NAME, "input"))
             )
             search_box.send_keys(roll_number)
             search_box.send_keys(Keys.RETURN)
 
-            # Wait for the roll number element to be visible and click it
             roll_element = WebDriverWait(driver, 15).until(
                 EC.visibility_of_element_located((By.XPATH, f"//p[contains(text(), '{roll_number}')]"))
             )
             roll_element.click()
 
-            # Fetch the attendance information
             attendance_element = WebDriverWait(driver, 15).until(
-                EC.presence_of_element_located((By.XPATH, "//span[contains(@class, 'text-blue-600')]"))
-            )
+                EC.presence_of_element_located((By.XPATH, "//span[contains(@class, 'text-blue-600')]")
+            ))
             attendance = attendance_element.text
+
+            if attendance.endswith("%%"):
+                attendance = attendance[:-1]
 
             return jsonify({"roll_number": roll_number, "attendance": attendance}), 200
 
         except Exception as e:
             driver.save_screenshot("error.png")
-            print(f"Error fetching attendance: {e}")
             return jsonify({"error": f"Could not fetch attendance for {roll_number}"}), 500
         finally:
             driver.quit()
