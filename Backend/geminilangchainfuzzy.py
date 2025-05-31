@@ -38,7 +38,8 @@ titles = [entry["title"] for entry in data]
 text_chunks = [entry["text"] for entry in data]
 combined_inputs = [f"{titles[i]}: {text_chunks[i]}" for i in range(len(data))]
 
-embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+embedding_model = SentenceTransformer("paraphrase-MiniLM-L3-v2")
+
 embeddings = embedding_model.encode(combined_inputs, convert_to_numpy=True).astype("float32")
 
 index = faiss.IndexFlatL2(embeddings.shape[1])
