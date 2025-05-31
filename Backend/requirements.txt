@@ -2,9 +2,8 @@ flask
 flask-cors
 selenium
 webdriver-manager
-sentence-transformers
-scikit-learn
+openai
 faiss-cpu
-google-generativeai
 numpy
 pymongo
+gunicorn
